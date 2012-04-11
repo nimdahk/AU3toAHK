@@ -18,7 +18,42 @@ Beep(Frequency, Duration=1000){
 	SoundBeep, Frequency, Duration
 	return 1 ; regardless of success, according to docs
 }
-
+Binary( expression ){ ; shaky implementation
+	varSetCapacity(out, 16)
+	NumPut(expression, out)
+	varSetCapacity(out, -1)
+	return out
+}
+BitAND(values*){
+	if (values.MaxIndex() < 2)
+		throw Exception("too few parameters passed to BitAND function", -1)
+	out := values.1 & values.2
+	Loop % values.MaxIndex() - 2
+		out &= values[A_Index+2]
+	return out
+}
+BitNOT( value ){ ; will have different results than in AU3
+	return ~value
+}
+BitOR( values* ){
+	if (values.MaxIndex() < 2)
+		throw Exception("too few parameters passed to BitOR function", -1)
+	out := values.1 | values.2
+	Loop % values.MaxIndex() - 2
+		out |= values[A_Index+2]
+	return out
+}
+BitShift( value, shift ){
+	return value >> shift
+}
+BitXOR( values* ){
+	if (values.MaxIndex() < 2)
+		throw Exception("too few parameters passed to BitXOR function", -1)
+	out := values.1 ^ values.2
+	Loop % values.MaxIndex() - 2
+		out ^= values[A_Index+2]
+	return out
+}
 HotkeySet(Hotkey, FunctionName=""){
     Global HotkeySet := Object()
  
