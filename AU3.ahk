@@ -93,6 +93,14 @@ ClipPut( value ){
 }
 ; Console functions must be implemented
 
+ControlSetText( title, text, controlID, new_text, flag=0 ){
+	ControlSetText, %ControlID%, %new_text%, %title%, %text%
+	e := errorLevel
+	if flag
+		WinSet, Redraw,, %title%, %text%
+	return !e
+}
+
 HotkeySet(Hotkey, FunctionName=""){
     Global HotkeySet := Object()
  
