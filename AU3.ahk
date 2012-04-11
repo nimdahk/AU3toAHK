@@ -54,6 +54,10 @@ BitXOR( values* ){
 		out ^= values[A_Index+2]
 	return out
 }
+BlockInput( flag ){ ; how to check Success/failure?
+	BlockInput % flag ? "on" : "off"
+	return 1 ; no idea if failure, so return success
+}
 HotkeySet(Hotkey, FunctionName=""){
     Global HotkeySet := Object()
  
