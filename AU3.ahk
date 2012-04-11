@@ -58,6 +58,19 @@ BlockInput( flag ){ ; how to check Success/failure?
 	BlockInput % flag ? "on" : "off"
 	return 1 ; no idea if failure, so return success
 }
+Break( mode ){ ; unimplemented
+	/*
+	1 = Break is enabled (user can quit) (default)
+	0 = Break is disabled (user cannot quit)
+	*/
+}
+Call(function, params*){
+	global @error, @extended
+	try returnvalue := %function%(params*)
+	catch
+		@error := 0xDEAD, @extended := 0xBEEF ; yes, really :/
+	return returnvalue
+}
 HotkeySet(Hotkey, FunctionName=""){
     Global HotkeySet := Object()
  
