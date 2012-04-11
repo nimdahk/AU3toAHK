@@ -1,0 +1,39 @@
+WinWaitActive("MyWebSite")
+
+MsgBox(4096,"", "This is a rather long line, so I " & _ ; comment
+   "broke it with the underscore, _, character.")
+          
+HotKeySet("{PAUSE}", "Start")
+HotKeySet("!{PAUSE}","Quit")
+
+TogglePause()
+
+For $i = 1 to 10 step 9
+	Sleep(50)
+Next
+                   
+func Start()
+	HotKeySet("{PAUSE}")
+	HotKeySet("{PAUSE}", "TogglePause")
+	ToolTip('Anti_AwayFromKeyboard started.',0,0)
+	While 1
+		Send("{F5}")
+		ToolTip('Just sent another key stroke!',0,0)
+		Sleep(500)
+		ToolTip('Waiting for a while...',0,0)
+		Sleep(Random(120000,180000))
+	WEnd
+EndFunc
+
+Func TogglePause()
+ToolTip('Anti_AwayFromKeyboard Stopped.',0,0)
+HotKeySet("{PAUSE}")
+HotKeySet("{PAUSE}", "Start")
+While 1
+sleep(100)
+WEnd
+EndFunc
+
+func Quit()
+Exit
+EndFunc
