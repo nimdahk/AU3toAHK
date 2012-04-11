@@ -150,6 +150,22 @@ Dec(hex, flag=1){ ; flag is not implemented
 	SetFormat, IntegerFast, %pfi%
 	return "" . num
 }
+FileCopy(Source,Destination,Flag = 0)
+{
+    If Flag = 8
+    {
+        SplitPath, Source,, Folder
+        If !InStr(FileExist(Folder),"D")
+        {
+            FileCreateDir, %Folder%
+            If ErrorLevel
+                Return, 0
+        }
+        Flag := 1
+    }
+    FileCopy, %Source%, %Destination%, %Flag%
+    Return, !ErrorLevel
+}
 HotkeySet(Hotkey, FunctionName=""){
     Global HotkeySet := Object()
  
