@@ -21,6 +21,11 @@ AutoItSetOption(option, param=""){ ; Needs to be extended
 		param := param="" ? 1 : param
 		CoordMode, Caret, % ["Window", "Screen", "Client"][param+1]
 		options.CaretCoordMode := param
+		return ret ; return the previous setting
+	}
+	if ( option = "WinWaitDelay" ){
+		ret := A_WinDelay
+		SetWinDelay, % param ? param : 250
 		return ret
 	}
 }
