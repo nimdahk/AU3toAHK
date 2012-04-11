@@ -198,6 +198,10 @@ ProcessWait( process, timeout="" ){
 	Process, wait, %process%, %timeout%
 	return ErrorLevel
 }
+ProcessWaitClose( process, timeout="" ){
+	Process, WaitClose, %process%, %timeout%
+	return ErrorLevel
+}
 Sleep(milliseconds){
 	Sleep milliseconds
 }
