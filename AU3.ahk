@@ -71,6 +71,10 @@ Call(function, params*){
 		@error := 0xDEAD, @extended := 0xBEEF ; yes, really :/
 	return returnvalue
 }
+CDTray( drive, status ){
+	Drive, Eject, %drive%, % Status = "open" ? "" : 1
+	return !ErrorLevel ; Success = 1
+}
 HotkeySet(Hotkey, FunctionName=""){
     Global HotkeySet := Object()
  
