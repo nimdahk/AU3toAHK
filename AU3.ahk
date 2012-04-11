@@ -1,5 +1,5 @@
 ; macros
-
+#Include macros2.ahk
 
 
 HotkeySet(Hotkey, FunctionName=""){
