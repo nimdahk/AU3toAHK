@@ -2,6 +2,19 @@
 #Include macros2.ahk
 
 
+Assign(varname, data, flag=0){
+	global
+	if flag=4 and not varExist(%varname%)
+		return 0
+	try %varname% := data
+	catch
+		return 0
+	return 1
+}
+varExist(ByRef v) { ; Requires 1.0.46+
+   return &v = &n ? 0 : v = "" ? 2 : 1 
+}
+
 HotkeySet(Hotkey, FunctionName=""){
     Global HotkeySet := Object()
  
