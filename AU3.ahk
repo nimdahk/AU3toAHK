@@ -75,6 +75,9 @@ CDTray( drive, status ){
 	Drive, Eject, %drive%, % Status = "open" ? "" : 1
 	return !ErrorLevel ; Success = 1
 }
+Ceiling( expression ){
+	return Ceil(expression)
+}
 HotkeySet(Hotkey, FunctionName=""){
     Global HotkeySet := Object()
  
