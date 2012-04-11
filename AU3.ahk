@@ -78,6 +78,15 @@ CDTray( drive, status ){
 Ceiling( expression ){
 	return Ceil(expression)
 }
+ClipGet( ){ ; not all @errors are returned correctly
+	global @error
+	if !clipboard
+	{
+		@error := 1
+		return ""
+	}
+	return Clipboard
+}
 HotkeySet(Hotkey, FunctionName=""){
     Global HotkeySet := Object()
  
