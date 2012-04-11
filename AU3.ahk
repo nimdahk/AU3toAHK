@@ -150,6 +150,9 @@ Dec(hex, flag=1){ ; flag is not implemented
 	SetFormat, IntegerFast, %pfi%
 	return "" . num
 }
+Exp( expression ){
+	return 2.71828182845905**expression
+}
 FileCopy(Source,Destination,Flag = 0)
 {
     If Flag = 8
