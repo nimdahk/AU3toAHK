@@ -1,4 +1,5 @@
-; macros
+; macros: AutoIt's version of built-in variables
+; @Hour and stuff
 #Include macros2.ahk
 
 
