@@ -87,6 +87,12 @@ ClipGet( ){ ; not all @errors are returned correctly
 	}
 	return Clipboard
 }
+ClipPut( value ){
+	Clipboard := value
+	return (Clipboard = value)
+}
+; Console functions must be implemented
+
 HotkeySet(Hotkey, FunctionName=""){
     Global HotkeySet := Object()
  
