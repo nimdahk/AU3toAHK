@@ -18,6 +18,9 @@ StringReplace, file, file, EndFunc, }, All
 file := RegExReplace(file, "mi`a)^(\h*)(While.*)$", "$1$2`r`n$1{")
 StringReplace, file, file, Wend, }, All
 
+; Switch .. Case .. EndSwitch -> Switch .. SwitchCase .. EndSwitch
+file := preparseSelectSwitch(file)
+
 ;Switch .. EndSwitch -> some awful If else if crap
 file := changeSwitch(file)
 
@@ -37,7 +40,7 @@ file := RegExReplace(file, "mi`a)^(\s*for\s+\$\w+\s*)=\s*([-\d\.]+)\s+to\s+([-\d
 StringReplace, file, file, Next, }, All
 
 ; for a in b .. next -> for a in b { .. }
-file := RegExReplace(file, "i)(for[^`r`n{]*[\r\n]*)", "$1{")
+file := RegExReplace(file, "i)(?:^|[\r\n])\s*(for[^`r`n{]*[\r\n]*)", "$1{")
 ; the NEXT keyword has been handled above
 
 ; Do .. Until -> Loop .. Until
@@ -123,9 +126,9 @@ changeSwitch(var){
 	Switch := 0
 	Loop Parse, var, `n, `r
 	{
-		If RegExMatch(A_LoopField, "mi`a)^(\s*)Switch(\s*.*)$", $)
+		If RegExMatch(A_LoopField, "mi`a)^(\s*)Switch(\s+.*)$", $)
 			out .= $1 "Switch" . ++Switch . " := " $2
-		else if RegExMatch(A_LoopField, "mi`a)^(\s*)Case(.*)$", $) and Switch > 0
+		else if RegExMatch(A_LoopField, "mi`a)^(\s*)SwitchCase(.*)$", $) and Switch > 0
 		{
 			case%Switch%++
 			if ( Trim($2) = "else" )
@@ -166,12 +169,12 @@ changeSelect(var){
 	{
 		if Trim(A_LoopField) = "Select"
 			Select++
-		else if RegExMatch(A_LoopField, "i)(\s*)Case\s*else(.*)", $) and Select > 0
+		else if RegExMatch(A_LoopField, "i)(\s*)SelectCase\s*else(.*)", $) and Select > 0
 		{
 			Case%Select%++
 			out .= $1 (Case%Select% > 1 ? "}" : "") . "else{" . $2
 		}
-		else if RegExMatch(A_LoopField, "i)(\s*)Case\s*(.*)", $) and Select > 0
+		else if RegExMatch(A_LoopField, "i)(\s*)SelectCase\s*(.*)", $) and Select > 0
 		{
 			Case%Select%++
 			out .= $1 . (Case%Select% > 1 ? "}else " : "") "if (" $2 "){"
@@ -186,5 +189,27 @@ changeSelect(var){
 		out .= "`r`n"
 	}
 	StringTrimRight, out, out, 2
+	return out
+}
+preparseSelectSwitch(var){
+	stack := {push: func("ObjInsert"), pop: func("ObjRemove")}
+	Loop Parse, var, `n, `r
+	{
+		if RegExMatch(A_LoopField,      "i)^\s*(Select|Switch)", $){
+			stack.push($1)
+			out .= A_LoopField
+		}
+		else if RegExMatch(A_LoopField, "i)^\s*End(Select|Switch)"){
+			stack.pop()
+			out .= A_LoopField
+		}
+		else if RegExMatch(A_LoopField, "i)^(\s*)case(.*)$", $){
+			out .= $1 . stack[stack.MaxIndex()] . "case" . $2
+		}
+		else{
+			out .= A_LoopField
+		}
+		out .= "`r`n"
+	}
 	return out
 }

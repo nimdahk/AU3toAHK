@@ -1,5 +1,23 @@
 WinWaitActive("MyWebSite")
 
+Select
+	Case $a = $b
+		one()
+	case $c = $d
+		two()
+	case $e = $f
+		Switch $f
+			case 1 to 3
+				four()
+			case 4, 9
+				five()
+			case else
+				six()
+		EndSwitch
+	case else
+		three()
+EndSelect
+
 MsgBox(4096,"", "This is a rather long line, so I " & _ ; comment
    "broke it with the underscore, _, character.")
           
