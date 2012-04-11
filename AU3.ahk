@@ -92,7 +92,10 @@ ClipPut( value ){
 	return (Clipboard = value)
 }
 ; Console functions must be implemented
-
+ControlMove(title, text, controlID, x, y, width="", height=""){
+	ControlMove, %controlID%, %x%, %y%, %width%, %height%, %title%, %text%
+	return !ErrorLevel
+}
 ControlSetText( title, text, controlID, new_text, flag=0 ){
 	ControlSetText, %ControlID%, %new_text%, %title%, %text%
 	e := errorLevel

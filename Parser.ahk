@@ -46,6 +46,16 @@ file := RegExReplace(file, "i)(?:^|[\r\n])\s*(for[^`r`n{]*[\r\n]*)", "$1{")
 ; Do .. Until -> Loop .. Until
 file := RegExReplace(file, "mi`a)^(\s*)Do", "$1Loop")
 
+; ContinueLoop -> Continue
+StringReplace, file, file, ContinueLoop, Continue, All
+
+; ExitLoop -> Break
+StringReplace, file, file, ExitLoop, Break, All
+
+; Exit -> ExitApp
+; use RegEx to reduce false positives
+file := RegExReplace(file, "mi`a)^(\s*)Exit", "$1ExitApp")
+
 ; 'She said "Hi"' -> "She said ""Hi"""
 file := changeQuotes(File)
 
