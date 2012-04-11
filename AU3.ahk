@@ -17,11 +17,25 @@ varExist(ByRef v) { ; Requires 1.0.46+
 AutoItSetOption(option, param=""){ ; Needs to be extended
 	static options := {}
 	if ( option = "CaretCoordMode" ){
-		ret := options.CaretCoordMode ? options.CaretCoordMode : 0
+		ret := options.CaretCoordMode ? options.CaretCoordMode : 0 
+		; 0 is AHK default, 1 is AutoIT default. Perhaps changing these options
+		; to their AutoIT defaults should be put in AU3.ahk
 		param := param="" ? 1 : param
 		CoordMode, Caret, % ["Window", "Screen", "Client"][param+1]
 		options.CaretCoordMode := param
 		return ret ; return the previous setting
+	}
+	if ( option = "MouseCoordMode" ){
+		ret := options.MouseCoordMode ? options.CaretCoordMode : 0
+		param := param="" ? 1 : param
+		CoordMode, Mouse, % ["Window", "Screen", "Client"][param+1]
+		options.MouseCoordMode := param
+		return ret ; return the previous setting
+	}
+	if ( option = "WinDetectHiddenText" ){
+		ret := A_DetectHiddenText = "On" ? 1 : 0
+		DetectHiddenText, % param = 1 ? "On" : "Off"
+		return ret
 	}
 	if ( option = "WinWaitDelay" ){
 		ret := A_WinDelay
@@ -156,8 +170,13 @@ Sleep(milliseconds){
 Send(text=""){
 	Send % text
 }
-WinWaitActive(title="", text="", ExcludeTitle="", ExcludeText=""){
-	WinWaitActive, %title%, %text%, %ExcludeTitle%, %ExcludeText%
+WinWaitActive(title, text="", Seconds=""){
+	WinWaitActive, %title%, %text%, %Seconds%
+	return !ErrorLevel
+}
+WinWaitNotActive(Title, Text="", Timeout=""){
+   WinWaitNotActive, % Title, % Text, % Timeout 
+   return !ErrorLevel
 }
 
 
