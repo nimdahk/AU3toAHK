@@ -103,7 +103,15 @@ ControlSetText( title, text, controlID, new_text, flag=0 ){
 		WinSet, Redraw,, %title%, %text%
 	return !e
 }
-
+Dec(hex, flag=1){ ; flag is not implemented
+	pfi := A_FormatInteger
+	SetFormat, IntegerFast, D
+	num := ("0x" . hex)
+	num += 0
+	num .= ""
+	SetFormat, IntegerFast, %pfi%
+	return "" . num
+}
 HotkeySet(Hotkey, FunctionName=""){
     Global HotkeySet := Object()
  
