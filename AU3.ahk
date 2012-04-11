@@ -176,6 +176,28 @@ ProcessClose( process ){
 	Process, Close, %process%
 	return !ErrorLevel
 }
+ProcessExists( process ){
+	Process, Exist, %process%
+	return ErrorLevel
+}
+ProcessList( name = "" ){
+	out := {}
+	if name
+		Query := " WHERE NAME='" name "'"
+	for process in ComObjGet("winmgmts:").ExecQuery("Select * from Win32_Process" . Query)
+		out[A_Index, 0] := process.name
+		,out[A_Index, 1]:= process.processID
+	out[0, 0] := out.MaxIndex()
+	return out
+}
+ProcessSetPriority( process, priority ){
+	Process, priority, %process%, % ["L", "B", "N", "A", "H", "R"][priority+1]
+	return !ErrorLevel
+}
+ProcessWait( process, timeout="" ){
+	Process, wait, %process%, %timeout%
+	return ErrorLevel
+}
 Sleep(milliseconds){
 	Sleep milliseconds
 }
