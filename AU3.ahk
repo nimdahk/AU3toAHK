@@ -122,6 +122,10 @@ ClipPut( value ){
 	return (Clipboard = value)
 }
 ; Console functions must be implemented
+ControlDisable(title, text, controlID){
+	Control, Disable,, %controlID%, %Title%, %Text%
+	return !ErrorLevel
+}
 ControlMove(title, text, controlID, x, y, width="", height=""){
 	ControlMove, %controlID%, %x%, %y%, %width%, %height%, %title%, %text%
 	return !ErrorLevel
