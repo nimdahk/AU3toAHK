@@ -14,6 +14,10 @@ Assign(varname, data, flag=0){
 varExist(ByRef v) { ; Requires 1.0.46+
    return &v = &n ? 0 : v = "" ? 2 : 1 
 }
+Beep(Frequency, Duration=1000){
+	SoundBeep, Frequency, Duration
+	return 1 ; regardless of success, according to docs
+}
 
 HotkeySet(Hotkey, FunctionName=""){
     Global HotkeySet := Object()
