@@ -126,6 +126,10 @@ ControlDisable(title, text, controlID){
 	Control, Disable,, %controlID%, %Title%, %Text%
 	return !ErrorLevel
 }
+ControlEnable(title, text, controlID){
+	Control, Enable,, %controlID%, %Title%, %Text%
+	return !ErrorLevel
+}
 ControlMove(title, text, controlID, x, y, width="", height=""){
 	ControlMove, %controlID%, %x%, %y%, %width%, %height%, %title%, %text%
 	return !ErrorLevel
@@ -168,7 +172,10 @@ HotkeySet(Hotkey, FunctionName=""){
         %f%()
     return
 }
-
+ProcessClose( process ){
+	Process, Close, %process%
+	return !ErrorLevel
+}
 Sleep(milliseconds){
 	Sleep milliseconds
 }
