@@ -273,8 +273,7 @@ DriveGetLabel(path){
 Exp( expression ){
 	return 2.71828182845905**expression
 }
-FileCopy(Source,Destination,Flag = 0)
-{
+FileCopy(Source,Destination,Flag = 0){
     If Flag = 8
     {
         SplitPath, Source,, Folder
@@ -288,6 +287,25 @@ FileCopy(Source,Destination,Flag = 0)
     }
     FileCopy, %Source%, %Destination%, %Flag%
     Return, !ErrorLevel
+}
+FileRecycle(source){
+	Try
+		FileRecycle, %source%
+	Catch
+		Return 0
+	Return 1
+}
+FileRecycleEmpty(source="")
+{
+	Try
+	{
+		FileRecycleEmpty %source%
+	}
+	Catch
+	{
+		Return 0
+	}
+	Return 1
 }
 HotkeySet(Hotkey, FunctionName=""){
     Global HotkeySet := Object()
@@ -328,6 +346,58 @@ IsNumber(param){
 		Return 1
 	Else
 		Return 0
+}
+MouseDown(myButton){
+	mainButtons := "Left,Main,Primary"
+	secondaryButtons := "Right,Secondary"
+
+	IfInString, mainButtons, %myButton%
+	{
+		Click Down
+	}
+	else IfInString, secondaryButtons, %myButton%
+	{
+		Click Down Right
+	}
+	else If (myButton = "Middle")
+	{
+		Click Down Middle
+	}
+	else
+	{
+		Return 0
+	}
+	Return 1
+}
+MouseGetPos( dimension="" ) {
+	MouseGetPos, X, Y
+	if (dimension = 0) ; X
+		return X
+	if (dimension = 1) ; Y
+		return Y
+	return {0: X, 1: Y}
+}
+MouseUp(myButton){
+	mainButtons := "Left,Main,Primary"
+	secondaryButtons := "Right,Secondary"
+
+	IfInString, mainButtons, %myButton%
+	{
+		Click Up
+	}
+	else IfInString, secondaryButtons, %myButton%
+	{
+		Click Up Right
+	}
+	else If (myButton = "Middle")
+	{
+		Click Up Middle
+	}
+	else
+	{
+		Return 0
+	}
+	Return 1
 }
 MsgBox( flag, title, text, timeout=0, hwnd=0 ){ ; needs timeout to be implemented
 	return DllCall("MessageBox", UPtr, hwnd
@@ -560,9 +630,6 @@ Input(Options = "", EndKeys = "", MatchList = "") {
 InputBox(Title = "", Prompt = "", HIDE = "", Width = "", Height = "", X = "", Y = "", Font = "", Timeout = "", Default = "") {
 	InputBox, v, %Title%, %Prompt%, %HIDE%, %Width%, %Height%, %X%, %Y%, , %Timeout%, %Default%
 	Return, v
-}
-MouseGetPos(ByRef OutputVarX = "", ByRef OutputVarY = "", ByRef OutputVarWin = "", ByRef OutputVarControl = "", Mode = "") {
-	MouseGetPos, OutputVarX, OutputVarY, OutputVarWin, OutputVarControl, %Mode%
 }
 PixelGetColor(X, Y, RGB = "") {
 	PixelGetColor, v, %X%, %Y%, %RGB%
