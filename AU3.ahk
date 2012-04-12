@@ -18,8 +18,7 @@ varExist(ByRef v) { ; Requires 1.0.46+
 AutoItSetOption(option, param=""){
 	return Opt(option, param)
 }
-Opt(Option,Param="")
-{
+Opt(Option,Param=""){
     static CaretCoordMode := 0
     static MouseCoordMode := 0
     static PixelCoordMode := 0
@@ -176,7 +175,7 @@ Break( mode ){ ; unimplemented
 	*/
 }
 Call(function, params*){
-	, @extended
+	global @extended
 	try returnvalue := %function%(params*)
 	catch
 		@error := 0xDEAD, @extended := 0xBEEF ; yes, really :/
