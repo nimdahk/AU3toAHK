@@ -20,7 +20,6 @@ AutoItSetOption(option, param=""){
 }
 Opt(Option,Param)
 {
-    global @error
     static CaretCoordMode := 0
     static MouseCoordMode := 0
     static PixelCoordMode := 0
@@ -177,7 +176,7 @@ Break( mode ){ ; unimplemented
 	*/
 }
 Call(function, params*){
-	global @error, @extended
+	, @extended
 	try returnvalue := %function%(params*)
 	catch
 		@error := 0xDEAD, @extended := 0xBEEF ; yes, really :/
@@ -191,7 +190,6 @@ Ceiling( expression ){
 	return Ceil(expression)
 }
 ClipGet( ){ ; not all @errors are returned correctly
-	global @error
 	if !clipboard
 	{
 		@error := 1
@@ -244,6 +242,34 @@ DirMove(source, dest, flag=0){
     FileMoveDir, %source%, %dest%, %flag%
     return !ErrorLevel
 }
+DirRemove(path, recurse=0){
+	FileRemoveDir, %path%, %recurse%
+	Return !ErrorLevel
+}
+DriveGetFileSystem(path){
+	try
+	{
+		DriveGet, fs, fs, %path%
+	}
+	catch
+	{
+		@error := 1
+		Return
+	}
+	Return fs
+}
+DriveGetLabel(path){
+	Try
+	{
+		DriveGet, cap, Capacity, %path%
+	}
+	Catch
+	{
+		@error := 1
+		Return
+	}
+	Return cap
+}
 Exp( expression ){
 	return 2.71828182845905**expression
 }
@@ -265,7 +291,7 @@ FileCopy(Source,Destination,Flag = 0)
 }
 HotkeySet(Hotkey, FunctionName=""){
     Global HotkeySet := Object()
- 
+
     if !FunctionName
     {
         Try Hotkey, %Hotkey%, Off
@@ -287,6 +313,9 @@ HotkeySet(Hotkey, FunctionName=""){
 }
 IsAdmin(){
 	Return A_IsAdmin
+}
+IsArray(var){
+	return IsObject(var)
 }
 IsObj(param){
 	Return IsObject(param)
