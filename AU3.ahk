@@ -240,6 +240,10 @@ DirCreate(path){
 	FileCreateDir, % path
 	Return !ErrorLevel
 }
+DirMove(source, dest, flag=0){
+    FileMoveDir, %source%, %dest%, %flag%
+    return !ErrorLevel
+}
 Exp( expression ){
 	return 2.71828182845905**expression
 }
