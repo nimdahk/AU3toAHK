@@ -309,6 +309,14 @@ Sleep(milliseconds){
 Send(text=""){
 	Send % text
 }
+WinFlash(title, text="", flashes=4, delay=500){
+	WinGet, ID, ID, %title%, %text%
+	Loop % flashes
+	{
+		DllCall("FlashWindow", "UPtr", ID, "Int", 1)
+		Sleep delay
+	}
+}
 WinWaitActive(title, text="", Seconds=""){
 	WinWaitActive, %title%, %text%, %Seconds%
 	return !ErrorLevel
@@ -358,9 +366,6 @@ class Iterator
         }
     }
 }
-
-
-
 
 
 
