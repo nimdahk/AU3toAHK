@@ -232,6 +232,14 @@ Dec(hex, flag=1){ ; flag is not implemented
 	SetFormat, IntegerFast, %pfi%
 	return "" . num
 }
+DirCopy(source, dest, flag=0){
+	FileCopyDir, % source, % dest, % flag
+	return !ErrorLevel
+}
+DirCreate(path){
+	FileCreateDir, % path
+	Return !ErrorLevel
+}
 Exp( expression ){
 	return 2.71828182845905**expression
 }
@@ -272,6 +280,27 @@ HotkeySet(Hotkey, FunctionName=""){
         f := HotkeySet[A_ThisHotkey]
         %f%()
     return
+}
+IsAdmin(){
+	Return A_IsAdmin
+}
+IsObj(param){
+	Return IsObject(param)
+}
+IsHWnd(param){
+	Return WinExist("ahk_id" param)
+}
+IsNumber(param){
+	If param is number
+		Return 1
+	Else
+		Return 0
+}
+MsgBox( flag, title, text, timeout=0, hwnd=0 ){ ; needs timeout to be implemented
+	return DllCall("MessageBox", UPtr, hwnd
+			, Str, Text
+			, Str, Title
+			, UInt,Flag)
 }
 ProcessClose( process ){
 	Process, Close, %process%
