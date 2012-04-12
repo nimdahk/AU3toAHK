@@ -18,7 +18,7 @@ varExist(ByRef v) { ; Requires 1.0.46+
 AutoItSetOption(option, param=""){
 	return Opt(option, param)
 }
-Opt(Option,Param)
+Opt(Option,Param="")
 {
     static CaretCoordMode := 0
     static MouseCoordMode := 0
