@@ -15,34 +15,116 @@ Assign(varname, data, flag=0){
 varExist(ByRef v) { ; Requires 1.0.46+
    return &v = &n ? 0 : v = "" ? 2 : 1 
 }
-AutoItSetOption(option, param=""){ ; Needs to be extended
-	static options := {}
-	if ( option = "CaretCoordMode" ){
-		ret := options.CaretCoordMode ? options.CaretCoordMode : 0 
-		; 0 is AHK default, 1 is AutoIT default. Perhaps changing these options
-		; to their AutoIT defaults should be put in AU3.ahk
-		param := param="" ? 1 : param
-		CoordMode, Caret, % ["Window", "Screen", "Client"][param+1]
-		options.CaretCoordMode := param
-		return ret ; return the previous setting
-	}
-	if ( option = "MouseCoordMode" ){
-		ret := options.MouseCoordMode ? options.CaretCoordMode : 0
-		param := param="" ? 1 : param
-		CoordMode, Mouse, % ["Window", "Screen", "Client"][param+1]
-		options.MouseCoordMode := param
-		return ret ; return the previous setting
-	}
-	if ( option = "WinDetectHiddenText" ){
-		ret := A_DetectHiddenText = "On" ? 1 : 0
-		DetectHiddenText, % param = 1 ? "On" : "Off"
-		return ret
-	}
-	if ( option = "WinWaitDelay" ){
-		ret := A_WinDelay
-		SetWinDelay, % param ? param : 250
-		return ret
-	}
+AutoItSetOption(option, param=""){
+	return Opt(option, param)
+}
+Opt(Option,Param)
+{
+    global @error
+    static CaretCoordMode := 0
+    static MouseCoordMode := 0
+    static PixelCoordMode := 0
+    static GuiDelimiter   := "|"
+    If (Option = "CaretCoordMode")
+    {
+        If Param = 0
+            CoordMode, Caret, Relative
+        Else If Param = 1
+            CoordMode, Caret, Screen
+        Else If Param = 2
+            CoordMode, Caret, Client
+        Else
+            @error := 1
+        Temp1 := CaretCoordMode, CaretCoordMode := Param
+        Return, Temp1
+    }
+    If (Option = "GUIDataSeparatorChar")
+    {
+        WinGet, List, List, ahk_class AutoHotkeyGUI
+        Loop Parse, List, `n
+        {
+            Gui, %A_LoopField%: +Delimiter%param%
+        }
+        temp := GuiDelimiter, GuiDelimiter := param
+        return temp
+    }
+    If (Option = "MouseClickDelay")
+    {
+        Temp1 := A_MouseDelay
+        If Param Is Integer
+            SetMouseDelay, Param
+        Else
+            @error := 1
+        Return, Temp1
+    }
+    If (Option = "MouseCoordMode")
+    {
+        If Param = 0
+            CoordMode, Mouse, Relative
+        Else If Param = 1
+            CoordMode, Mouse, Screen
+        Else If Param = 2
+            CoordMode, Mouse, Client
+        Else
+            @error := 1
+        Temp1 := MouseCoordMode, MouseCoordMode := Param
+        Return, Temp1
+    }
+    If (Option = "PixelCoordMode")
+    {
+        If Param = 0
+            CoordMode, Pixel, Relative
+        Else If Param = 1
+            CoordMode, Pixel, Screen
+        Else If Param = 2
+            CoordMode, Pixel, Client
+        Else
+            @error := 1
+        Temp1 := PixelCoordMode, PixelCoordMode := Param
+        Return, Temp1
+    }
+    If (Option = "SendKeyDelay")
+    {
+        Temp1 := A_KeyDelay
+        If Param Is Integer
+            SetKeyDelay, Param
+        Else
+            @error := 1
+        Return, Temp1
+    }
+    If (Option = "WinDetectHiddenText")
+    {
+        Temp1 := A_DetectHiddenText
+        If Param = 0
+            DetectHiddenText, Off
+        Else If Param = 1
+            DetectHiddenText, On
+        Else
+            @error := 1
+        Return, Temp1
+    }
+    If (Option = "WinTextMatchMode")
+    {
+        Temp1 := A_TitleMatchMode
+        If Param = 1
+            SetTitleMatchMode, 1
+        Else If Param = 2
+            SetTitleMatchMode, 2
+        Else If Param = 3
+            SetTitleMatchMode, 3
+        Else
+            @error := 1
+        Return, Temp1
+    }
+    If (Option = "WinWaitDelay")
+    {
+        Temp1 := A_WinDelay
+        If Param Is Integer
+            SetWinDelay, %Temp1%
+        Else
+            @error := 1
+        Return, Temp1
+    }
 }
 Beep(Frequency, Duration=1000){
 	SoundBeep, Frequency, Duration
