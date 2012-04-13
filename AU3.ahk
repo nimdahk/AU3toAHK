@@ -287,6 +287,13 @@ FileCopy(Source,Destination,Flag = 0){
     FileCopy, %Source%, %Destination%, %Flag%
     Return, !ErrorLevel
 }
+FileSaveDialog( title, init_dir, filter, options="", default_name="", hwnd="" ) ; hwnd not supported for now
+{
+	FileSelectFile, out, S%options%, %init_Dir%\%Default_name%, %title%, %filter%
+	if ErrorLevel
+		@error := 1
+	return out
+}
 FileRecycle(source){
 	Try
 		FileRecycle, %source%
