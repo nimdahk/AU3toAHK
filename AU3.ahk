@@ -353,6 +353,14 @@ IsNumber(param){
 	Else
 		Return 0
 }
+MouseClick(button, x="", y="", clicks=1, speed=10){
+	If button in left,primary,main
+		button := "L"
+	If button in secondary,right
+		button := "R"
+	MouseClick, %button%, X, Y, clicks, Speed
+	Return 1 ; Error checking should be done in this function, but that is of low importance
+}
 MouseDown(myButton){
 	mainButtons := "Left,Main,Primary"
 	secondaryButtons := "Right,Secondary"
