@@ -287,6 +287,9 @@ FileCopy(Source,Destination,Flag = 0){
     FileCopy, %Source%, %Destination%, %Flag%
     Return, !ErrorLevel
 }
+FileExists( path ){
+	return !!FileExist(path)
+}
 FileSaveDialog( title, init_dir, filter, options="", default_name="", hwnd="" ) ; hwnd not supported for now
 {
 	FileSelectFile, out, S%options%, %init_Dir%\%Default_name%, %title%, %filter%
